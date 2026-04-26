@@ -84,9 +84,9 @@ export default function MapView({ locations, activeCategories, flyTarget, theme 
           fillOpacity: 0.88, weight: 1.2,
         }) as LCircle;
 
-        circle.on("mouseover", function (e: LeafletMouseEvent) {
-          (this as LCircle).setRadius(10);
-          (this as LCircle).setStyle({ fillOpacity: 1, weight: 2 });
+        circle.on("mouseover", function (this: LCircle, e: LeafletMouseEvent) {
+          this.setRadius(10);
+          this.setStyle({ fillOpacity: 1, weight: 2 });
           hoverRef.current = { loc, x: e.originalEvent.clientX, y: e.originalEvent.clientY };
           forcePopup();
         });
@@ -96,9 +96,9 @@ export default function MapView({ locations, activeCategories, flyTarget, theme 
             forcePopup();
           }
         });
-        circle.on("mouseout", function () {
-          (this as LCircle).setRadius(5);
-          (this as LCircle).setStyle({ fillOpacity: 0.88, weight: 1.2 });
+        circle.on("mouseout", function (this: LCircle) {
+          this.setRadius(5);
+          this.setStyle({ fillOpacity: 0.88, weight: 1.2 });
           hoverRef.current = null;
           forcePopup();
         });
