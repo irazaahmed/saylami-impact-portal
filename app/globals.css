@@ -1,26 +1,110 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; font-family: "Inter", system-ui, -apple-system, sans-serif; }
+
+/* ─── Leaflet base ─── */
+.leaflet-container { width: 100%; height: 100%; }
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,135,90,0.3); border-radius: 4px; }
+
+/* ─── Leaflet zoom controls ─── */
+.leaflet-control-zoom { border: none !important; box-shadow: none !important; margin: 14px !important; }
+.leaflet-control-zoom a {
+  width: 34px !important; height: 34px !important; line-height: 32px !important;
+  font-size: 18px !important; font-weight: 300 !important;
+  background: rgba(255,255,255,0.12) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255,255,255,0.18) !important;
+  color: #fff !important; transition: all 0.15s !important;
+}
+.leaflet-control-zoom a:hover { background: #00875A !important; border-color: #00875A !important; }
+.leaflet-control-zoom-in  { border-radius: 10px 10px 0 0 !important; }
+.leaflet-control-zoom-out { border-radius: 0 0 10px 10px !important; }
+
+/* Light mode zoom buttons */
+.light-zoom .leaflet-control-zoom a {
+  background: rgba(255,255,255,0.88) !important;
+  border: 1px solid rgba(0,0,0,0.12) !important;
+  color: #1a3028 !important;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ─── Attribution ─── */
+.leaflet-attribution-flag { display: none !important; }
+.leaflet-control-attribution {
+  background: rgba(0,0,0,0.45) !important; color: #aaa !important;
+  font-size: 9px !important; padding: 2px 6px !important; border-radius: 6px !important;
 }
+.leaflet-control-attribution a { color: #aaa !important; }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ─── Mobile: sidebar slide-in ─── */
+@media (max-width: 767px) {
+  .sidebar-base {
+    position: fixed !important;
+    top: 56px !important;
+    left: 0 !important;
+    height: calc(100dvh - 56px) !important;
+    transform: translateX(-100%) !important;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.4) !important;
+    z-index: 200 !important;
+  }
+  .sidebar-base.sidebar-open {
+    transform: translateX(0) !important;
+  }
+  .mobile-backdrop {
+    display: block !important;
+  }
+  .sidebar-close-btn {
+    display: flex !important;
+  }
+  .stats-hide {
+    display: none !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ─── Desktop: hamburger always hidden ─── */
+@media (min-width: 768px) {
+  .md-hide { display: none !important; }
+}
+
+/* ─── Mobile: popup as bottom sheet ─── */
+@media (max-width: 767px) {
+  .map-popup {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: auto !important;
+    width: 100% !important;
+    padding-bottom: env(safe-area-inset-bottom);
+    animation: slideUp 0.22s cubic-bezier(0.4,0,0.2,1);
+    pointer-events: auto !important;
+  }
+  .map-popup > div {
+    border-radius: 20px 20px 0 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+  }
+  .popup-close-btn { display: flex !important; }
+  .popup-handle    { display: flex !important; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ─── TopBar: very small phones ─── */
+@media (max-width: 400px) {
+  .topbar-subtitle { display: none !important; }
+  .topbar-divider  { display: none !important; }
+}
+
+/* ─── Loading ping animation ─── */
+@keyframes ping {
+  75%, 100% { transform: scale(2); opacity: 0; }
 }

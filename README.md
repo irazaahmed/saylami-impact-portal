@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Saylani Welfare — Interactive Impact Map
+
+An interactive map showing **1,103 Saylani Welfare locations** across Pakistan — branches, RO plants, schools, madrasahs, medical centres, IT institutes, and more.
+
+## Features
+
+- **1,103 locations** across Pakistan plotted as interactive dots
+- **Hover / tap** any dot to see name, category, address, and zone
+- **Category filter** sidebar — toggle any service type on/off
+- **Search** by name, city, category, or address with instant fly-to
+- **Dark / Light map** toggle (CartoDB Dark Matter ↔ Voyager)
+- **Mobile responsive** — slide-in sidebar, bottom-sheet popup on tap
+- **Fast** — canvas renderer + imperative Leaflet (no React re-renders for markers)
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 15 (App Router) |
+| Map | Leaflet.js (imperative canvas renderer) |
+| Data | Static JSON read server-side via `fs.readFileSync` |
+| Styling | Inline styles + Tailwind CSS globals |
+| Language | TypeScript |
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Data Format
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`data/locations.json` — 1,103 entries:
 
-## Learn More
+```json
+{
+  "n":   "Branch / location name",
+  "c":   "Original category from Excel",
+  "nc":  "Normalised category",
+  "a":   "Street address",
+  "z":   "Zone / city",
+  "lat": 24.819,
+  "lng": 67.026
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
+Coordinates geocoded using OpenStreetMap Nominatim API.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Script | Purpose |
+|--------|---------|
+| `scripts/fix-coords.js` | Assign neighbourhood-level coordinates from lookup table |
+| `scripts/geocode-karachi.js` | Re-geocode all 480 Karachi locations via Nominatim (~9 min) |
+| `scripts/geocode.js` | Re-geocode all 1,103 locations via Nominatim (~25 min) |
 
-## Deploy on Vercel
+## Categories
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Category | Colour |
+|----------|--------|
+| Branch / Dastarkhwan | Green |
+| RO Plant | Blue |
+| Madrasah | Purple |
+| School / Education | Yellow |
+| Medical | Red |
+| IT / Vocational | Cyan |
+| Shed | Orange |
+| Food Distribution | Lime |
+| Sweet Home / Old Age | Pink |
+| Other | Grey |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+Data © Saylani Welfare International Trust. Map tiles © OpenStreetMap contributors, © CARTO.
